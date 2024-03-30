@@ -1,0 +1,25 @@
+<script>
+  document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Megakadályozza az alapértelmezett viselkedést (oldal újratöltés)
+    
+    var uploadButton = document.getElementById('uploadButton');
+    uploadButton.classList.add('glow'); // Csillámok hozzáadása a gombhoz
+    setTimeout(function() {
+      uploadButton.classList.remove('glow'); // Csillámok eltávolítása a gombról
+      var formData = new FormData(); // Új FormData objektum létrehozása
+
+      // Feltöltött kép és szöveg hozzáadása a formData-hoz
+      formData.append('image', document.getElementById('image').files[0]);
+      formData.append('text', document.getElementById('text').value);
+
+      // Fetch API használata az adatok elküldésére a PHP szkriptnek
+      fetch('upload.php', {
+        method: 'POST', // HTTP POST kérés
+        body: formData // A formData objektum tartalma kerül elküldésre
+      })
+      .then(response => response.json()) // Válasz feldolgozása JSON formátumban
+      .then(data => console.log(data)) // A válasz kiírása a konzolba
+      .catch(error => console.error('Error:', error)); // Hibakezelés, ha a kérés nem sikerül
+    }, 1000); // 1 másodperc késleltetés a csillámok eltávolításáig
+  });
+</script>

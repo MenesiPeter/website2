@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exkluzív Tartalom</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Exkluzív Tartalom Feltöltése</h1>
+    <form id="uploadForm">
+      <label for="image">Kép feltöltése:</label>
+      <input type="file" id="image" name="image" accept="image/*">
+      <label for="text">Szöveg feltöltése:</label>
+      <textarea id="text" name="text"></textarea>
+      <button type="submit" id="uploadButton">Feltöltés</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var uploadButton = document.getElementById('uploadButton');
+      uploadButton.classList.add('glow');
+      setTimeout(function() {
+        uploadButton.classList.remove('glow');
+
+        var imageInput = document.getElementById('image');
+        var textInput = document.getElementById('text');
+        var formData = new FormData();
+        formData.append('image', imageInput.files[0]);
+        formData.append('text', textInput.value);
+
+        fetch('upload.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
